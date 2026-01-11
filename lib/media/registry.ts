@@ -11,6 +11,8 @@ const generatedIndexPath = path.join(
   ".generated",
   "media-index.json"
 );
+const soraSyncEndpoint = process.env.SORA_SYNC_ENDPOINT;
+const soraSyncToken = process.env.SORA_SYNC_TOKEN;
 
 async function readGeneratedIndex(): Promise<MediaItem[] | null> {
   try {
@@ -30,6 +32,41 @@ async function readContentFiles(): Promise<string[]> {
   return entries.filter((entry) => entry.endsWith(".mdx"));
 }
 
+function parseMediaBody(slug: string, raw: string): MediaEntry {
+  const { data, content } = matter(raw);
+  const frontmatter = mediaFrontmatterSchema.parse(data);
+  return {
+    item: toMediaItem(slug, frontmatter),
+    content,
+  };
+}
+
+async function readRemoteEntries(): Promise<MediaEntry[] | null> {
+  if (!soraSyncEndpoint || !soraSyncToken) {
+    return null;
+  }
+
+  const response = await fetch(soraSyncEndpoint, {
+    headers: {
+      Authorization: `Bearer ${soraSyncToken}`,
+    },
+    next: {
+      revalidate: 300,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Sora sync failed: ${response.status}`);
+  }
+
+  const payload = (await response.json()) as Array<{
+    slug: string;
+    body: string;
+  }>;
+
+  return payload.map((entry) => parseMediaBody(entry.slug, entry.body));
+}
+
 function sortMedia(items: MediaItem[]) {
   return [...items].sort((a, b) => {
     const dateDiff = new Date(b.createdAt).getTime() -
@@ -45,15 +82,14 @@ async function parseMediaFile(filename: string): Promise<MediaEntry> {
   const slug = filename.replace(/\.mdx$/, "");
   const fullPath = path.join(contentDir, filename);
   const raw = await fs.readFile(fullPath, "utf8");
-  const { data, content } = matter(raw);
-  const frontmatter = mediaFrontmatterSchema.parse(data);
-  return {
-    item: toMediaItem(slug, frontmatter),
-    content,
-  };
+  return parseMediaBody(slug, raw);
 }
 
 export const getMediaIndex = cache(async (): Promise<MediaItem[]> => {
+  const remoteEntries = await readRemoteEntries();
+  if (remoteEntries) {
+    return sortMedia(remoteEntries.map((entry) => entry.item));
+  }
   const generated = await readGeneratedIndex();
   if (generated) {
     return sortMedia(generated);
@@ -64,11 +100,23 @@ export const getMediaIndex = cache(async (): Promise<MediaItem[]> => {
 });
 
 export const getMediaEntry = cache(async (slug: string): Promise<MediaEntry> => {
+  const remoteEntries = await readRemoteEntries();
+  if (remoteEntries) {
+    const entry = remoteEntries.find((item) => item.item.slug === slug);
+    if (!entry) {
+      throw new Error(`Media entry not found: ${slug}`);
+    }
+    return entry;
+  }
   const file = `${slug}.mdx`;
   return parseMediaFile(file);
 });
 
 export const getMediaSlugs = cache(async (): Promise<string[]> => {
+  const remoteEntries = await readRemoteEntries();
+  if (remoteEntries) {
+    return remoteEntries.map((entry) => entry.item.slug);
+  }
   const files = await readContentFiles();
   return files.map((file) => file.replace(/\.mdx$/, ""));
 });
