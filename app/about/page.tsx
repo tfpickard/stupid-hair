@@ -27,9 +27,10 @@ export default function AboutPage() {
           <li>• v2: Automated Sora sync from the official API.</li>
         </ul>
         <p className="text-white/60">
-          Sora sync now runs automatically during dev and build when
-          SORA_SYNC_ENDPOINT and SORA_SYNC_TOKEN are set, keeping the feed in
-          step with the latest drops.
+          Sora sync now runs automatically during dev and build. Drop videos in
+          <span className="font-semibold text-white"> /public/media/sora</span>{" "}
+          (with optional JSON sidecars) or configure SORA_SYNC_ENDPOINT +
+          SORA_SYNC_TOKEN to pull from an API.
         </p>
       </div>
     </div>
