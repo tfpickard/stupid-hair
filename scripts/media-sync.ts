@@ -90,8 +90,12 @@ function normalizeItem(item: SyncItem): NormalizedItem {
   const tags = item.tags ?? [];
   const visibility = item.visibility ?? "public";
 
-  const sources =
-    item.assets?.sources ??
+  const sources = item.assets?.sources?.map((source) => ({
+    src: source.src,
+    type: source.type ?? "video/mp4",
+  }));
+  const resolvedSources =
+    sources ??
     (item.videoUrl
       ? [
           {
@@ -104,7 +108,7 @@ function normalizeItem(item: SyncItem): NormalizedItem {
   const assets = {
     poster: item.assets?.poster ?? item.posterUrl,
     src: item.assets?.src,
-    sources,
+    sources: resolvedSources,
     width: item.assets?.width ?? item.width,
     height: item.assets?.height ?? item.height,
     durationSec: item.assets?.durationSec ?? item.durationSec,
