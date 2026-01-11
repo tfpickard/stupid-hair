@@ -110,11 +110,11 @@ async function fetchProfileHtml(url: string) {
 
 function extractNextData(html: string) {
   const match = html.match(
-    /<script id="__NEXT_DATA__"[^>]*>(?<json>[\s\S]*?)<\/script>/
+    /<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/
   );
-  if (!match?.groups?.json) return null;
+  if (!match?.[1]) return null;
   try {
-    return JSON.parse(match.groups.json) as unknown;
+    return JSON.parse(match[1]) as unknown;
   } catch {
     return null;
   }
