@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Glitch Lab Runner">
+  <rect width="1200" height="800" fill="#0b0b0b" />
+  <rect x="140" y="180" width="920" height="440" rx="32" fill="#1a1a1a" stroke="#c7f564" stroke-width="4" />
+  <g fill="#c7f564">
+    <rect x="220" y="260" width="120" height="120" />
+    <rect x="420" y="320" width="120" height="120" />
+    <rect x="620" y="260" width="120" height="120" />
+    <rect x="820" y="320" width="120" height="120" />
+  </g>
+  <text x="140" y="700" fill="#f6f6f6" font-size="56" font-family="Arial, sans-serif">
+    Glitch Lab Runner
+  </text>
+</svg>
