@@ -24,12 +24,13 @@ export default function AboutPage() {
         <ul className="space-y-3">
           <li>• v1: Infinite Sora feed, MDX notes, and RSS.</li>
           <li>• v1.5: Photos, other media, and micro-games.</li>
-          <li>• v2: Automated Sora sync when a public API exists.</li>
+          <li>• v2: Automated Sora sync from the official API.</li>
         </ul>
         <p className="text-white/60">
-          Until an official Sora API exists, the feed is powered by local MDX
-          files and a placeholder sync script. When the API appears, the sync
-          script is where automation will plug in.
+          Sora sync runs automatically during dev and build. Use
+          SORA_SYNC_ENDPOINT + SORA_SYNC_TOKEN for an API, or set
+          SORA_PROFILE_URL (plus SORA_PROFILE_COOKIE if needed) to scrape the
+          public profile feed.
         </p>
       </div>
     </div>
