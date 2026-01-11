@@ -93,15 +93,20 @@ Place local assets in `public/media/`. Reference them in frontmatter with `/medi
 
 `/rss.xml` is generated from the same MDX index used by the feed.
 
-## Sora sync (future)
+## Sora sync
 
-There is **no official public Sora API** today. This project uses local MDX as the canonical source and includes a placeholder sync script:
+The media feed can be synced automatically from a JSON export or API response:
 
 ```bash
 bun run media:sync
 ```
 
-When an official API exists, set `SORA_SYNC_ENDPOINT` and `SORA_SYNC_TOKEN` in `.env.local` and wire the script to fetch new items. Until then, MDX remains the trusted source of truth.
+Provide one of the following:
+
+- `SORA_SYNC_ENDPOINT` (optionally with `SORA_SYNC_TOKEN`) for a JSON API.
+- `SORA_SYNC_FEED_PATH` for a local JSON file (defaults to `content/sora-feed.json` if present).
+
+The sync script transforms the JSON payload into MDX entries, replacing the placeholder content with your latest Sora videos.
 
 ## Deployment
 

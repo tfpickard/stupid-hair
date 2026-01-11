@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "bun scripts/media-sync.ts && bun scripts/media-build-index.ts",
     "dev": "next dev",
+    "prebuild": "bun scripts/media-sync.ts && bun scripts/media-build-index.ts",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
