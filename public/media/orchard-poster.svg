@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Orchard with Teeth poster">
+  <rect width="1200" height="800" fill="#0b0b0b" />
+  <g opacity="0.9">
+    <circle cx="400" cy="360" r="220" fill="#9bd43f" />
+    <circle cx="740" cy="420" r="180" fill="#b3f066" />
+  </g>
+  <g fill="#ffffff">
+    <circle cx="350" cy="320" r="40" />
+    <circle cx="500" cy="320" r="40" />
+  </g>
+  <g fill="#1a1a1a">
+    <circle cx="350" cy="320" r="18" />
+    <circle cx="500" cy="320" r="18" />
+  </g>
+  <rect x="300" y="420" width="300" height="80" rx="40" fill="#8b1b1b" />
+  <text x="80" y="740" fill="#f6f6f6" font-size="56" font-family="Arial, sans-serif">
+    Orchard with Teeth
+  </text>
+</svg>

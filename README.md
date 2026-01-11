@@ -1,146 +1,128 @@
-# Next.js Production Template
+# stupid.hair
 
-A production-grade Next.js template with modern tooling, comprehensive documentation, and AI-assisted development workflows.
+Minimal creator portfolio for **@goatspeed**. Built with Next.js App Router, Bun, and Tailwind CSS. The feed is MDX-first, doom-scrollable, and ready for future Sora automation.
 
-## Key Features
-
-- **Production-First**: No MVPs, prototypes, or placeholders—only production-ready code
-- **Bleeding Edge**: Latest stable versions of Next.js, React, TypeScript, and tooling
-- **Modern Stack**: Bun, TypeScript, Tailwind CSS, Drizzle ORM, Biome
-- **Vercel Optimized**: Configured for seamless Vercel deployment with Python support
-- **Multi-Agent Architecture**: Structured workflows for collaborative AI development
-- **Fully Tested**: Unit, integration, and E2E testing with Vitest and Playwright
-- **Accessible**: WCAG 2.1 AA compliance built-in
-- **Theme System**: Dark/light/auto themes with smooth transitions
-- **Analytics**: Plausible Analytics integration for privacy-focused tracking
-- **Type-Safe**: Strict TypeScript configuration with comprehensive types
-- **Secure**: OWASP best practices, input validation, and security headers
-
-## Quick Start
+## Quickstart
 
 ```bash
-# Clone and setup
-git clone https://github.com/yourusername/nextjs-template.git my-project
-cd my-project
 bun install
-
-# Configure environment
-cp .env.example .env.local
-# Edit .env.local with your values
-
-# Initialize database
-bun run db:migrate
-
-# Start development
-bun run dev
+bun dev
 ```
 
-Visit [QUICKSTART.md](./QUICKSTART.md) for detailed setup instructions.
-
-## Documentation
-
-- **[QUICKSTART.md](./QUICKSTART.md)** - Step-by-step setup guide
-- **[CLAUDE.md](./CLAUDE.md)** - AI/Claude integration guidelines and prompting patterns
-- **[AGENTS.md](./AGENTS.md)** - Multi-agent development workflows
-- **[CODEX.md](./CODEX.md)** - Code generation standards and templates
-- **[DEVELOPMENT.md](./DEVELOPMENT.md)** - Development standards and best practices
-- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Architectural patterns and principles
-- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Vercel deployment guide
-
-## Tech Stack
-
-| Category | Technology |
-|----------|-----------|
-| Framework | Next.js 15+ (App Router) |
-| Language | TypeScript 5.7+ |
-| Package Manager | Bun |
-| Styling | Tailwind CSS 4.x |
-| Database | PostgreSQL with Drizzle ORM |
-| Authentication | NextAuth.js |
-| Testing | Vitest + Playwright |
-| Linting/Formatting | Biome |
-| Deployment | Vercel |
-| Analytics | Plausible |
-| Python Backend | Python 3.13+ |
-
-## Commands
+Build for production:
 
 ```bash
-# Development
-bun run dev              # Start dev server
-bun run build            # Production build
-bun run start            # Start production server
-bun run lint             # Lint code
-bun run type-check       # Type checking
-bun run format           # Format code
-
-# Database
-bun run db:generate      # Generate migrations
-bun run db:migrate       # Run migrations
-bun run db:studio        # Open Drizzle Studio
-bun run db:seed          # Seed database
-
-# Testing
-bun run test             # Run all tests
-bun run test:unit        # Unit tests
-bun run test:integration # Integration tests
-bun run test:e2e         # E2E tests
-bun run test:coverage    # Coverage report
-
-# Deployment
-vercel                   # Deploy preview
-vercel --prod            # Deploy production
+bun run build
+bun start
 ```
 
-## Project Structure
+## Content workflow (MDX-first)
 
-```
-.
-├── app/                 # Next.js App Router
-│   ├── (auth)/         # Auth routes
-│   ├── (dashboard)/    # Dashboard routes
-│   └── api/            # API routes
-├── components/          # React components
-│   ├── ui/             # Reusable UI components
-│   ├── features/       # Feature-specific components
-│   └── layouts/        # Layout components
-├── lib/                 # Utilities and shared code
-│   ├── db/             # Database (schema, client)
-│   ├── auth/           # Authentication
-│   └── utils/          # Utility functions
-├── api/                 # Python API functions
-├── tests/               # All tests
-│   ├── unit/
-│   ├── integration/
-│   └── e2e/
-└── public/              # Static assets
+Media items live in `content/media/*.mdx`. Frontmatter is the canonical registry for the feed, detail pages, and RSS.
+
+### Add a new item
+
+```bash
+bun run media:add
 ```
 
-## Core Principles
+This creates a new MDX file with a stub frontmatter.
 
-1. **Production-Grade**: Every feature is fully implemented with no placeholders or TODOs
-2. **Type-Safe**: Strict TypeScript with comprehensive types throughout
-3. **Tested**: Minimum 80% code coverage with unit, integration, and E2E tests
-4. **Secure**: OWASP Top 10 compliance, input validation, output sanitization
-5. **Performant**: Optimized bundles, lazy loading, efficient caching
-6. **Accessible**: WCAG 2.1 AA compliant with semantic HTML and ARIA labels
-7. **Documented**: Comprehensive documentation for all major components
+### Validate frontmatter + assets
 
-## Contributing
+```bash
+bun run media:validate
+```
 
-Contributions are welcome! Please read [DEVELOPMENT.md](./DEVELOPMENT.md) for code standards and [CLAUDE.md](./CLAUDE.md) for AI-assisted development guidelines.
+This checks schema validity and verifies that local assets referenced in frontmatter exist in `public/`.
 
-## License
+### Build a JSON index (optional cache)
 
-MIT License - see [LICENSE](./LICENSE) for details.
+```bash
+bun run media:build-index
+```
 
-## Support
+Writes `/.generated/media-index.json` for faster cold starts.
 
-For questions or issues:
-- Check the [documentation](./QUICKSTART.md)
-- Search [existing issues](https://github.com/yourusername/nextjs-template/issues)
-- Open a [new issue](https://github.com/yourusername/nextjs-template/issues/new)
+## Frontmatter schema
 
+```yaml
 ---
+title: "Orchard with Teeth"
+createdAt: "2024-08-10"
+type: "video" # video | image | game | other
+source: "sora" # sora | upload | external
+sora:
+  username: "goatspeed"
+  soraId: "optional"
+  prompt: "optional"
+  model: "optional"
+assets:
+  poster: "/media/example.svg"
+  src: "/media/example.mp4"
+  sources:
+    - src: "https://.../example.mp4"
+      type: "video/mp4"
+  width: 1200
+  height: 720
+  durationSec: 12
 
-**Built with attention to quality, security, and developer experience.**
+tags:
+  - surreal
+  - body horror
+
+description: "Short summary"
+visibility: "public" # public | unlisted
+---
+```
+
+## MDX components
+
+Use these inside `content/media/*.mdx`:
+
+- `<Callout title="..."></Callout>`
+- `<PromptBlock prompt="..."></PromptBlock>`
+- `<TagList tags={["tag"]} />`
+- `<MediaEmbed type="image" src="..." />`
+
+## Media assets
+
+Place local assets in `public/media/`. Reference them in frontmatter with `/media/...` paths.
+
+## RSS
+
+`/rss.xml` is generated from the same MDX index used by the feed.
+
+## Sora sync (future)
+
+There is **no official public Sora API** today. This project uses local MDX as the canonical source and includes a placeholder sync script:
+
+```bash
+bun run media:sync
+```
+
+When an official API exists, set `SORA_SYNC_ENDPOINT` and `SORA_SYNC_TOKEN` in `.env.local` and wire the script to fetch new items. Until then, MDX remains the trusted source of truth.
+
+## Deployment
+
+- Vercel-friendly with App Router defaults.
+- Add any secrets to `.env.local` (never commit them).
+- Optional: run `bun run media:build-index` in CI for faster cold starts.
+
+## Project structure
+
+```
+/app
+  /(home feed)
+  /m/[slug]
+  /videos
+  /photos
+  /games
+  /games/[slug]
+  /rss.xml
+  /api/feed
+/components
+/content/media
+/lib
+/public/media
+```
